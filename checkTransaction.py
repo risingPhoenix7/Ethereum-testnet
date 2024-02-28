@@ -40,4 +40,4 @@ api_key = "5BQGA5ESDDFAIWD8E42HSW6SHSDBDBUW5R"
 transaction_data = get_transaction_data(txhash, api_key)
 if transaction_data is not None:
     print("Transaction data retrieved successfully:")
-    print(from_hex(transaction_data['input']))
+    print(transaction_data)

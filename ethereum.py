@@ -1,6 +1,7 @@
 import requests
 import os
 
+api_key = os.getenv("apiKey")
 
 def get_eth_balance(address, api_key):
     base_url = "https://api-sepolia.etherscan.io/api"
@@ -15,6 +16,7 @@ def get_eth_balance(address, api_key):
     response = requests.get(base_url, params=parameters)
     if response.status_code == 200:
         data = response.json()
+        print(data)
         # Convert balance from Wei to Ether
         balance = int(data["result"]) / 1e18
         return balance
