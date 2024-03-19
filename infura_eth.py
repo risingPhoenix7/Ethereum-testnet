@@ -19,14 +19,13 @@ else:
     print("Failed to connect to Ethereum node.")
 
 address = os.getenv("address")
-api_key = os.getenv("apiKey")
 
 # Sender's details
 from_address = Web3.to_checksum_address(
     address)
 private_key = os.getenv("privKey")
 
-# Recipient address (example)
+# Recipient address
 to_address = Web3.to_checksum_address(
     "0xFe6Be457E482CE2B7b8c3BE7BCe32064713f4c5e")
 

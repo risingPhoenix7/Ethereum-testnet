@@ -1,22 +1,30 @@
+
 import requests
 import os
+import json
+from dotenv import load_dotenv
 
-api_key = os.getenv("apiKey")
+load_dotenv()
 
-def get_transaction_data(txhash, api_key):
-    base_url = "https://api-sepolia.etherscan.io/api"
-    parameters = {
-        "module": "proxy",
-        "action": "eth_getTransactionByHash",
-        "txhash": txhash,
-        "apikey": api_key
+node_url = os.getenv("nodeurl")
+headers = {
+    "Content-Type": "application/json"
+}
+
+
+def get_transaction_data(txhash):
+    payload = {
+        "jsonrpc": "2.0",
+        "method": "eth_getTransactionByHash",
+        "params": [txhash],
+        "id": 1
     }
 
-    response = requests.get(base_url, params=parameters)
+    response = requests.post(
+        node_url, data=json.dumps(payload), headers=headers)
     if response.status_code == 200:
         data = response.json()
-        if data["result"]:
-            # Assuming 'result' contains the transaction details
+        if data.get("result"):
             transaction_details = data["result"]
             return transaction_details
         else:
@@ -28,16 +36,8 @@ def get_transaction_data(txhash, api_key):
         return None
 
 
-def from_hex(hex_string):
-    return bytes.fromhex(hex_string[2:]).decode('utf-8')
-
-
-txhash = "0x59ac8814e09b6a413969b1e6c0189da82937996e4ce8e94b50eab66c61b96fd6"
-txhash = "0x204fb69834247d1151b322447e81c79e87f10425062bf37a68c389fcd7935864"
 txhash = "0x3af6f95a6cae715f01b92452dd988e7866bd03d86e016c1ece245c56e6ffc234"
-
-api_key = "5BQGA5ESDDFAIWD8E42HSW6SHSDBDBUW5R"
-transaction_data = get_transaction_data(txhash, api_key)
+transaction_data = get_transaction_data(txhash)
 if transaction_data is not None:
     print("Transaction data retrieved successfully:")
-    print(transaction_data)
+    print(bytes.fromhex(transaction_data['input'][2:]).decode('utf-8'))

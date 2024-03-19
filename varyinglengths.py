@@ -15,12 +15,6 @@ node_url = os.getenv("nodeurl")
 w3 = Web3(Web3.HTTPProvider(node_url))
 w3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-if w3.is_connected():
-    print("Connected to Ethereum node.")
-else:
-    print("Failed to connect to Ethereum node.")
-    exit()
-
 # Function to generate random string
 
 
@@ -92,6 +86,11 @@ def plot_data():
 
 # Example usage
 if __name__ == "__main__":
-    # for length in range(100, 1001, 100):
-    #     send_transaction(length)
+    if w3.is_connected():
+        print("Connected to Ethereum node.")
+    else:
+        print("Failed to connect to Ethereum node.")
+        exit()
+    for length in range(500, 1001, 100):
+        send_transaction(length)
     plot_data()
